@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mona — Ta maison, zéro démarcheur. #DirectProprio</title>
+<meta name="description" content="Trouvez votre logement à Abidjan directement avec le propriétaire. Zéro frais d'agence, paiement sécurisé, 100% digital.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --teal:        #0D7B6E;
+  --teal-dark:   #095F55;
+  --teal-light:  #12A090;
+  --teal-pale:   #E6F4F2;
+  --teal-mid:    #B2DDD8;
+  --orange:      #F5873A;
+  --orange-dark: #D9701F;
+  --orange-pale: #FEF0E7;
+  --warm-white:  #FDFAF7;
+  --white:       #FFFFFF;
+  --dark:        #0F1E1C;
+  --dark-2:      #1A2E2B;
+  --mid:         #4A6260;
+  --muted:       #8FA5A2;
+  --border:      #D8EEEB;
+  --shadow-sm:   0 2px 8px rgba(13,123,110,0.08);
+  --shadow-md:   0 8px 32px rgba(13,123,110,0.12);
+  --shadow-lg:   0 20px 60px rgba(13,123,110,0.18);
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--warm-white);
+  color: var(--dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+a  { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: inherit; border: none; outline: none; }
+
+/* ═══════════════════════════════════════════
+   BETA BANNER
+═══════════════════════════════════════════ */
+.beta-banner {
+  background: var(--teal-dark);
+  color: rgba(255,255,255,0.92);
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+}
+
+.beta-banner a {
+  color: #FCD34D;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.beta-close {
+  position: absolute;
+  right: 16px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 6px;
+}
+.beta-close:hover { color: white; }
+
+/* ═══════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════ */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(253,250,247,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.3s;
+}
+.navbar.scrolled { box-shadow: var(--shadow-md); }
+
+.nav-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.logo-icon {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FBBF80 0%, #F5873A 40%, #E06B2A 70%, #0D7B6E 100%);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 3px 12px rgba(245,135,58,0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-icon svg { width: 24px; height: 24px; }
+
+.logo-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--teal);
+  letter-spacing: -0.3px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+  flex: 1;
+}
+
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--mid);
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--teal); }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.btn-connect {
+  background: var(--teal);
+  color: white;
+  padding: 9px 22px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-connect:hover {
+  background: var(--teal-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(13,123,110,0.3);
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+}
+.hamburger span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--dark);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* Mobile nav */
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 16px 24px 24px;
+  gap: 0;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--dark);
+  border-bottom: 1px solid var(--border);
+}
+.mobile-menu a:last-child { border-bottom: none; }
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero {
+  min-height: calc(100vh - 110px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 48px;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 60px 24px 80px;
+}
+
+.hero-left { max-width: 560px; }
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--teal-pale);
+  color: var(--teal);
+  border: 1px solid var(--teal-mid);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  animation: fadeSlideDown 0.6s ease both;
+}
+
+.hero-tag::before {
+  content: '';
+  width: 7px; height: 7px;
+  background: var(--teal);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+h1.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 4.5vw, 54px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: var(--dark);
+  margin-bottom: 18px;
+  animation: fadeSlideDown 0.6s 0.1s ease both;
+}
+
+h1.hero-title span { color: var(--teal); }
+
+.hero-sub {
+  font-size: 17px;
+  color: var(--mid);
+  margin-bottom: 36px;
+  line-height: 1.7;
+  animation: fadeSlideDown 0.6s 0.2s ease both;
+}
+
+.hero-sub strong { color: var(--orange); }
+
+/* Search bar */
+.search-bar {
+  display: flex;
+  background: white;
+  border: 2px solid var(--teal-mid);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 16px;
+  animation: fadeSlideDown 0.6s 0.3s ease both;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-bar:focus-within {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(13,123,110,0.12), var(--shadow-md);
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 16px 20px;
+  border: none;
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  color: var(--dark);
+  background: transparent;
+}
+.search-bar input::placeholder { color: var(--muted); }
+
+.search-icon {
+  display: flex; align-items: center;
+  padding: 0 16px 0 20px;
+  color: var(--muted);
+  font-size: 20px;
+}
+
+.btn-search {
+  background: var(--teal);
+  color: white;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  border-radius: 0 calc(var(--r-lg) - 2px) calc(var(--r-lg) - 2px) 0;
+  transition: background 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-search:hover { background: var(--teal-dark); }
+
+.hero-link {
+  font-size: 14px;
+  color: var(--teal);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: fadeSlideDown 0.6s 0.4s ease both;
+  transition: gap 0.2s;
+}
+.hero-link:hover { gap: 10px; }
+
+/* Hero image */
+.hero-right {
+  position: relative;
+  animation: fadeSlideUp 0.8s 0.2s ease both;
+}
+
+.hero-image-wrap {
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  aspect-ratio: 4/3;
+  position: relative;
+}
+
+.hero-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 6s ease;
+}
+.hero-image-wrap:hover img { transform: scale(1.04); }
+
+/* Floating badge on hero */
+.hero-badge {
+  position: absolute;
+  bottom: 24px;
+  left: -20px;
+  background: white;
+  border-radius: var(--r-md);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 220px;
+  animation: floatBadge 3s ease-in-out infinite;
+}
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.badge-icon {
+  width: 40px; height: 40px;
+  background: var(--teal-pale);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.badge-label { font-size: 11px; color: var(--muted); font-weight: 500; }
+.badge-value { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--dark); margin-top: 1px; }
+
+.hero-badge-2 {
+  position: absolute;
+  top: 28px;
+  right: -16px;
+  background: var(--teal);
+  color: white;
+  border-radius: var(--r-md);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: floatBadge 3s 1.5s ease-in-out infinite;
+}
+.badge-2-icon { font-size: 22px; }
+.badge-2-text { font-size: 13px; font-weight: 600; }
+.badge-2-sub  { font-size: 11px; opacity: 0.75; margin-top: 1px; }
+
+/* ═══════════════════════════════════════════
+   SECTION HELPERS
+═══════════════════════════════════════════ */
+section { padding: 80px 24px; }
+
+.section-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.section-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 800;
+  color: var(--dark);
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  margin-bottom: 14px;
+}
+
+.section-sub {
+  font-size: 16px;
+  color: var(--mid);
+  max-width: 520px;
+  line-height: 1.7;
+}
+
+/* Fade-in animation for sections */
+.fade-in {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════
+   WHY SECTION
+═══════════════════════════════════════════ */
+.why-section {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.why-header { text-align: center; margin-bottom: 48px; }
+.why-header .section-sub { margin: 0 auto; }
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.why-card {
+  background: var(--warm-white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 32px 28px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.why-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--teal-pale) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.why-card:hover {
+  border-color: var(--teal-mid);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+.why-card:hover::before { opacity: 1; }
+
+.why-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+.icon-shield  { background: #E8F5F3; }
+.icon-house   { background: #FEF0E7; }
+.icon-clock   { background: #EFF6FF; }
+
+.why-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--dark);
+  margin-bottom: 10px;
+  position: relative; z-index: 1;
+}
+.why-card p {
+  font-size: 14px;
+  color: var(--mid);
+  line-height: 1.65;
+  position: relative; z-index: 1;
+}
+
+/* ═══════════════════════════════════════════
+   PROPERTY CARDS
+═══════════════════════════════════════════ */
+.listings-section { background: var(--warm-white); }
+
+.listings-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.view-all {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.2s;
+  white-space: nowrap;
+}
+.view-all:hover { gap: 10px; }
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.property-card {
+  background: white;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+}
+.property-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--teal-mid);
+}
+
+.card-image-wrap {
+  position: relative;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.card-image-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.property-card:hover .card-image-wrap img { transform: scale(1.08); }
+
+.card-badge-verified {
+  position: absolute;
+  top: 14px; left: 14px;
+  background: rgba(13,123,110,0.92);
+  backdrop-filter: blur(8px);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 100px;
+  display: flex; align-items: center; gap: 5px;
+}
+
+.card-badge-type {
+  position: absolute;
+  top: 14px; right: 14px;
+  background: rgba(255,255,255,0.95);
+  color: var(--dark);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-body {
+  padding: 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-location {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+.card-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.card-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--teal);
+}
+
+.card-price-unit {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.card-caution {
+  font-size: 13px;
+  color: var(--orange);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.card-features {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.feat-chip {
+  background: var(--teal-pale);
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--teal-mid);
+  white-space: nowrap;
+}
+
+.btn-reserve {
+  margin-top: auto;
+  width: 100%;
+  background: var(--orange);
+  color: white;
+  padding: 15px 20px;
+  border-radius: var(--r-md);
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-reserve:hover {
+  background: var(--orange-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245,135,58,0.4);
+}
+.btn-reserve:active { transform: translateY(0); }
+
+.whatsapp-icon {
+  width: 20px; height: 20px;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════
+   HOW IT WORKS
+═══════════════════════════════════════════ */
+.how-section {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+}
+
+.how-header { text-align: center; margin-bottom: 60px; }
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  position: relative;
+}
+
+.steps-grid::before {
+  content: '';
+  position: absolute;
+  top: 32px; left: calc(16.666% + 32px);
+  right: calc(16.666% + 32px);
+  height: 2px;
+  background: linear-gradient(90deg, var(--teal-mid), var(--teal-mid));
+  z-index: 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 28px 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.step-num {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: white;
+  font-family: 'Syne', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(13,123,110,0.3);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.step:hover .step-num {
+  background: var(--orange);
+  box-shadow: 0 4px 20px rgba(245,135,58,0.4);
+  transform: scale(1.1);
+}
+
+.step-icon { font-size: 28px; margin-bottom: 14px; }
+
+.step h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--dark);
+}
+.step p { font-size: 14px; color: var(--mid); line-height: 1.65; }
+
+/* ═══════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════ */
+.testimonials-section {
+  background: var(--warm-white);
+  border-top: 1px solid var(--border);
+}
+
+.testimonials-header { text-align: center; margin-bottom: 48px; }
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.testimonial-card {
+  background: white;
+  border-radius: var(--r-xl);
+  padding: 32px;
+  border: 1.5px solid var(--border);
+  position: relative;
+  transition: all 0.3s;
+}
+.testimonial-card::before {
+  content: '"';
+  position: absolute;
+  top: 20px; right: 28px;
+  font-family: Georgia, serif;
+  font-size: 80px;
+  color: var(--teal-pale);
+  line-height: 1;
+}
+.testimonial-card:hover {
+  border-color: var(--teal-mid);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+.testimonial-text {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--dark);
+  margin-bottom: 24px;
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.author-avatar {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--teal-mid);
+}
+
+.author-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.author-role {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.verified-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--teal-pale);
+  color: var(--teal);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 100px;
+  margin-top: 4px;
+}
+
+.stars { color: #F59E0B; font-size: 14px; letter-spacing: 1px; margin-bottom: 14px; }
+
+/* ═══════════════════════════════════════════
+   CTA BANNER
+═══════════════════════════════════════════ */
+.cta-section {
+  background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 50%, var(--teal-light) 100%);
+  padding: 90px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: -120px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+  border-radius: 50%;
+}
+.cta-section::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: -40px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(245,135,58,0.15) 0%, transparent 60%);
+  border-radius: 50%;
+}
+
+.cta-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.cta-inner h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(26px, 3.5vw, 42px);
+  font-weight: 800;
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+}
+
+.cta-sub { font-size: 16px; color: rgba(255,255,255,0.75); margin-bottom: 40px; }
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-cta-tenant {
+  background: var(--teal-dark);
+  color: white;
+  border: 2px solid rgba(255,255,255,0.3);
+  padding: 16px 32px;
+  border-radius: var(--r-lg);
+  font-size: 15px;
+  font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-cta-tenant:hover {
+  background: rgba(0,0,0,0.2);
+  border-color: white;
+  transform: translateY(-2px);
+}
+
+.btn-cta-owner {
+  background: var(--orange);
+  color: white;
+  padding: 16px 32px;
+  border-radius: var(--r-lg);
+  font-size: 15px;
+  font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-cta-owner:hover {
+  background: var(--orange-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(245,135,58,0.45);
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer {
+  background: var(--dark);
+  color: rgba(255,255,255,0.55);
+  padding: 56px 24px 32px;
+}
+
+.footer-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.footer-brand .logo-name { color: white; }
+
+.footer-tagline {
+  display: inline-block;
+  background: var(--orange);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 100px;
+  margin-top: 10px;
+  margin-bottom: 16px;
+}
+
+.footer-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.45);
+}
+
+.footer-col h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 18px;
+}
+
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col a { font-size: 14px; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+.footer-col a:hover { color: white; }
+
+.social-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+.social-btn {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s;
+  color: rgba(255,255,255,0.7);
+}
+.social-btn:hover { background: var(--teal); border-color: var(--teal); color: white; transform: translateY(-2px); }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-copy { font-size: 13px; }
+.footer-legal { display: flex; gap: 20px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,0.35); transition: color 0.2s; }
+.footer-legal a:hover { color: white; }
+
+/* ═══════════════════════════════════════════
+   FLOATING WHATSAPP
+═══════════════════════════════════════════ */
+.float-whatsapp {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.float-tooltip {
+  background: white;
+  border-radius: var(--r-md);
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.25s;
+  pointer-events: none;
+}
+
+.float-btn {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: #25D366;
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.45);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 3px solid white;
+}
+.float-btn:hover { transform: scale(1.12); box-shadow: 0 8px 32px rgba(37,211,102,0.55); }
+.float-btn:hover ~ .float-tooltip,
+.float-whatsapp:hover .float-tooltip {
+  opacity: 1; transform: translateX(0);
+}
+.float-btn svg { width: 32px; height: 32px; }
+
+.float-badge {
+  position: absolute;
+  top: -3px; right: -3px;
+  background: var(--orange);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid white;
+  animation: bounceIn 2s 1s ease both;
+}
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* ═══════════════════════════════════════════
+   WIZARD OF OZ PANEL (Founder only)
+═══════════════════════════════════════════ */
+.woz-toggle {
+  position: fixed;
+  bottom: 28px; left: 28px;
+  z-index: 200;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.15);
+  border: 1px solid rgba(0,0,0,0.1);
+  color: var(--mid);
+  font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.woz-toggle:hover { background: var(--dark); color: white; }
+
+.woz-panel {
+  display: none;
+  position: fixed;
+  bottom: 80px; left: 20px;
+  z-index: 201;
+  background: var(--dark);
+  color: white;
+  border-radius: var(--r-lg);
+  padding: 24px;
+  width: 320px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.woz-panel.open { display: block; animation: fadeSlideUp 0.3s ease both; }
+.woz-panel h4 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.woz-panel p { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.65; margin-bottom: 10px; }
+.woz-panel .woz-step { display: flex; gap: 10px; margin-bottom: 10px; font-size: 13px; }
+.woz-panel .woz-num { width: 22px; height: 22px; border-radius: 50%; background: var(--orange); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════ */
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+
+@media (max-width: 900px) {
+  .why-grid   { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+  .cards-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+  .steps-grid::before { display: none; }
+  .steps-grid { grid-template-columns: 1fr; gap: 0; max-width: 400px; margin: 0 auto; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .nav-links, .btn-connect { display: none; }
+  .hamburger { display: flex; margin-left: auto; }
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 40px; padding-bottom: 60px;
+    gap: 40px;
+    min-height: auto;
+  }
+  .hero-right { order: -1; }
+  .hero-badge { left: 12px; bottom: 12px; min-width: 180px; }
+  .hero-badge-2 { right: 10px; top: 12px; }
+  .search-bar { flex-wrap: wrap; border-radius: var(--r-md); }
+  .btn-search { width: 100%; border-radius: 0 0 calc(var(--r-md) - 2px) calc(var(--r-md) - 2px); }
+  .search-icon { display: none; }
+  section { padding: 60px 16px; }
+  .cta-buttons { flex-direction: column; align-items: stretch; }
+  .footer-top { grid-template-columns: 1fr; gap: 28px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .float-whatsapp { bottom: 20px; right: 20px; }
+  .float-btn { width: 54px; height: 54px; }
+  .woz-toggle { bottom: 20px; left: 20px; }
+  .woz-panel { width: calc(100vw - 40px); bottom: 72px; left: 20px; }
+}
+
+@media (max-width: 480px) {
+  h1.hero-title { font-size: 28px; }
+  .hero-badge { display: none; }
+  .hero-badge-2 { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ BETA BANNER ═══ -->
+<div class="beta-banner" id="betaBanner">
+  🧪 Version bêta — Nous testons Mona avec une sélection de logements à Abidjan.
+  <a href="https://wa.me/2250797279722?text=Bonjour%20Mona%20!%20Je%20veux%20rejoindre%20la%20liste%20d%27attente." target="_blank">Rejoindre la liste d'attente →</a>
+  <button class="beta-close" onclick="document.getElementById('betaBanner').style.display='none'" aria-label="Fermer">×</button>
+</div>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <!-- Logo -->
+    <a href="#" class="logo" aria-label="Mona Accueil">
+      <div class="logo-icon">
+        <!-- House + M + pin SVG -->
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 6L8 16V32H16V23H24V32H32V16L20 6Z" fill="white" fill-opacity="0.9"/>
+          <circle cx="20" cy="27" r="4" fill="white" fill-opacity="0.95"/>
+          <path d="M20 23C20 23 17 26.5 17 28.5C17 30.2 18.3 31.5 20 31.5C21.7 31.5 23 30.2 23 28.5C23 26.5 20 23 20 23Z" fill="rgba(245,135,58,0.9)"/>
+        </svg>
+      </div>
+      <span class="logo-name">Mona</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#how">Comment ça marche ?</a></li>
+      <li><a href="#cta">Pour les propriétaires</a></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="https://wa.me/2250797279722?text=Bonjour%20!%20Je%20souhaite%20me%20connecter%20à%20Mona." target="_blank" class="btn-connect">Se connecter</a>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#how" onclick="toggleMenu()">Comment ça marche ?</a>
+    <a href="#cta" onclick="toggleMenu()">Pour les propriétaires</a>
+    <a href="#">Blog</a>
+    <a href="https://wa.me/2250797279722?text=Bonjour%20!%20Je%20souhaite%20me%20connecter%20à%20Mona." target="_blank" style="color:var(--teal);font-weight:700">Se connecter →</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section style="padding:0; background:var(--warm-white);">
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">🏠 #DirectProprio — Abidjan</div>
+
+      <h1 class="hero-title">
+        MONA : Ta maison,<br><span>zéro démarcheur.</span>
+      </h1>
+
+      <p class="hero-sub">
+        La location simple, rapide, sécurisée.<br>
+        <strong>#DirectProprio</strong> · Paiement Mobile Money · Zéro frais d'agence.
+      </p>
+
+      <div class="search-bar">
+        <span class="search-icon">📍</span>
+        <input type="text" placeholder="Ville, Quartier, Commune..." aria-label="Rechercher un logement">
+        <button class="btn-search" onclick="handleSearch()">Rechercher une maison</button>
+      </div>
+
+      <a href="#listings" class="hero-link">
+        Découvrir les offres meublées <span>→</span>
+      </a>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-image-wrap">
+        <img
+          src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=700&q=85"
+          alt="Belle villa moderne à Abidjan"
+          loading="eager"
+        >
+      </div>
+
+      <div class="hero-badge">
+        <div class="badge-icon">🛡️</div>
+        <div>
+          <div class="badge-label">Paiements sécurisés</div>
+          <div class="badge-value">Séquestre Mona</div>
+        </div>
+      </div>
+
+      <div class="hero-badge-2">
+        <div class="badge-2-icon">✅</div>
+        <div>
+          <div class="badge-2-text">Propriétaire vérifié</div>
+          <div class="badge-2-sub">KYC certifié</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHY MONA ═══ -->
+<section class="why-section">
+  <div class="section-inner">
+    <div class="why-header fade-in">
+      <div class="section-eyebrow">Nos engagements</div>
+      <h2 class="section-title">Pourquoi choisir Mona ?</h2>
+      <p class="section-sub">Une plateforme pensée pour les Ivoiriens, par des Ivoiriens. Zéro intermédiaire, 100% direct.</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card fade-in" style="transition-delay:0.1s">
+        <div class="why-icon icon-shield">🛡️</div>
+        <h3>100% Sécurisé</h3>
+        <p>Paiement bloqué en séquestre jusqu'à confirmation. Zéro arnaque, fonds protégés par Mona pendant 48h.</p>
+      </div>
+      <div class="why-card fade-in" style="transition-delay:0.2s">
+        <div class="why-icon icon-house">🏠</div>
+        <h3>Direct Propriétaire</h3>
+        <p>Économisez les frais d'agence. Échangez directement avec le vrai propriétaire, sans intermédiaire.</p>
+      </div>
+      <div class="why-card fade-in" style="transition-delay:0.3s">
+        <div class="why-icon icon-clock">⏰</div>
+        <h3>Rapide &amp; Simple</h3>
+        <p>Trouvez et réservez votre logement en quelques minutes. Payez via Orange Money, MTN MoMo ou Wave.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROPERTY LISTINGS ═══ -->
+<section class="listings-section" id="listings">
+  <div class="section-inner">
+    <div class="listings-header fade-in">
+      <div>
+        <div class="section-eyebrow">Sélection du mois</div>
+        <h2 class="section-title">Des logements qui changent tout</h2>
+      </div>
+      <a href="https://wa.me/2250797279722?text=Bonjour%20Mona%20!%20Je%20veux%20voir%20toutes%20les%20annonces%20disponibles." target="_blank" class="view-all">Voir toutes les annonces <span>→</span></a>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- Card 1 -->
+      <article class="property-card fade-in" style="transition-delay:0.1s">
+        <div class="card-image-wrap">
+          <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500&q=85" alt="Appartement 3 pièces Cocody Angré" loading="lazy">
+          <div class="card-badge-verified">✓ Propriétaire vérifié</div>
+          <div class="card-badge-type">Meublé</div>
+        </div>
+        <div class="card-body">
+          <div class="card-location">📍 Cocody Angré, Abidjan</div>
+          <h3 class="card-title">Appartement 3 pièces</h3>
+          <div class="card-price-row">
+            <span class="card-price">180 000</span>
+            <span class="card-price-unit">FCFA / mois</span>
+          </div>
+          <div class="card-caution">Caution : 2 mois · Disponible maintenant</div>
+          <div class="card-features">
+            <span class="feat-chip">🛏 3 pièces</span>
+            <span class="feat-chip">📐 85 m²</span>
+            <span class="feat-chip">🪑 Meublé</span>
+            <span class="feat-chip">🚗 Parking</span>
+          </div>
+          <a
+            href="https://wa.me/2250797279722?text=Bonjour%20!%20C%27est%20Mona%20%F0%9F%8F%A0%20Pour%20valider%20votre%20visite%20en%20direct%20avec%20le%20propri%C3%A9taire%2C%20merci%20de%20confirmer%20votre%20profil.%20Quel%20logement%20vous%20int%C3%A9resse%20%3F%20(Appartement%203%20pi%C3%A8ces%20-%20Cocody%20Angr%C3%A9%20-%20180%20000%20FCFA)"
+            target="_blank"
+            class="btn-reserve"
+          >
+            <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Réserver une visite
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="property-card fade-in" style="transition-delay:0.2s">
+        <div class="card-image-wrap">
+          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&q=85" alt="Studio meublé Marcory Zone 4" loading="lazy">
+          <div class="card-badge-verified">✓ Propriétaire vérifié</div>
+          <div class="card-badge-type">Meublé</div>
+        </div>
+        <div class="card-body">
+          <div class="card-location">📍 Marcory Zone 4, Abidjan</div>
+          <h3 class="card-title">Studio meublé tout confort</h3>
+          <div class="card-price-row">
+            <span class="card-price">95 000</span>
+            <span class="card-price-unit">FCFA / mois</span>
+          </div>
+          <div class="card-caution">Caution : 2 mois · Disponible maintenant</div>
+          <div class="card-features">
+            <span class="feat-chip">🛏 1 pièce</span>
+            <span class="feat-chip">📐 35 m²</span>
+            <span class="feat-chip">🪑 Meublé</span>
+            <span class="feat-chip">❄️ Climatisé</span>
+          </div>
+          <a
+            href="https://wa.me/2250797279722?text=Bonjour%20!%20C%27est%20Mona%20%F0%9F%8F%A0%20Pour%20valider%20votre%20visite%20en%20direct%20avec%20le%20propri%C3%A9taire%2C%20merci%20de%20confirmer%20votre%20profil.%20Quel%20logement%20vous%20int%C3%A9resse%20%3F%20(Studio%20meublé%20-%20Marcory%20Zone%204%20-%2095%20000%20FCFA)"
+            target="_blank"
+            class="btn-reserve"
+          >
+            <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Réserver une visite
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="property-card fade-in" style="transition-delay:0.3s">
+        <div class="card-image-wrap">
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500&q=85" alt="Villa 4 pièces Riviera Palmeraie" loading="lazy">
+          <div class="card-badge-verified">✓ Propriétaire vérifié</div>
+          <div class="card-badge-type">Non meublé</div>
+        </div>
+        <div class="card-body">
+          <div class="card-location">📍 Riviera Palmeraie, Abidjan</div>
+          <h3 class="card-title">Villa moderne 4 pièces</h3>
+          <div class="card-price-row">
+            <span class="card-price">350 000</span>
+            <span class="card-price-unit">FCFA / mois</span>
+          </div>
+          <div class="card-caution">Caution : 2 mois · Disponible 05/05/2025</div>
+          <div class="card-features">
+            <span class="feat-chip">🛏 4 pièces</span>
+            <span class="feat-chip">📐 150 m²</span>
+            <span class="feat-chip">🏡 Jardin</span>
+            <span class="feat-chip">🚗 2 Parking</span>
+          </div>
+          <a
+            href="https://wa.me/2250797279722?text=Bonjour%20!%20C%27est%20Mona%20%F0%9F%8F%A0%20Pour%20valider%20votre%20visite%20en%20direct%20avec%20le%20propri%C3%A9taire%2C%20merci%20de%20confirmer%20votre%20profil.%20Quel%20logement%20vous%20int%C3%A9resse%20%3F%20(Villa%204%20pi%C3%A8ces%20-%20Riviera%20Palmeraie%20-%20350%20000%20FCFA)"
+            target="_blank"
+            class="btn-reserve"
+          >
+            <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Réserver une visite
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how-section" id="how">
+  <div class="section-inner">
+    <div class="how-header fade-in">
+      <div class="section-eyebrow">Simple comme bonjour</div>
+      <h2 class="section-title">Comment ça marche ?</h2>
+      <p class="section-sub" style="margin:0 auto">En 3 étapes, trouvez et emménagez dans votre logement idéal à Abidjan.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step fade-in" style="transition-delay:0.1s">
+        <div class="step-num">1</div>
+        <div class="step-icon">🔍</div>
+        <h3>Recherchez</h3>
+        <p>Trouvez votre logement idéal sur la carte interactive. Filtrez par quartier, prix, et type de bien.</p>
+      </div>
+      <div class="step fade-in" style="transition-delay:0.2s">
+        <div class="step-num">2</div>
+        <div class="step-icon">💬</div>
+        <h3>Contactez</h3>
+        <p>Échangez directement avec le propriétaire vérifié via WhatsApp. Pas d'intermédiaire, zéro commission.</p>
+      </div>
+      <div class="step fade-in" style="transition-delay:0.3s">
+        <div class="step-num">3</div>
+        <div class="step-icon">🏡</div>
+        <h3>Emménagez</h3>
+        <p>Payez votre loyer en toute sécurité via Orange Money, MTN MoMo ou Wave. Quittance automatique.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="testimonials-section" style="display:none">
+  <div class="section-inner">
+    <div class="testimonials-header fade-in">
+      <div class="section-eyebrow">Ils nous font confiance</div>
+      <h2 class="section-title">Ce qu'ils en disent</h2>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card fade-in" style="transition-delay:0.1s">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">
+          "Grâce à Mona, j'ai trouvé mon appartement en 2 jours ! Le propriétaire était directement disponible sur WhatsApp, pas besoin de passer par une agence. Je recommande à 100%."
+        </p>
+        <div class="testimonial-author">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="M. Kouamé" class="author-avatar">
+          <div>
+            <div class="author-name">M. Kouamé Koffi</div>
+            <div class="author-role">Locataire à Cocody</div>
+            <div class="verified-chip">✓ Profil vérifié</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-in" style="transition-delay:0.2s">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">
+          "Je loue via Mona depuis 3 mois et j'ai trouvé les meilleurs propriétaires ! Le paiement sécurisé m'a rassurée. Mon loyer est payé chaque mois sans stress, et les quittances arrivent automatiquement."
+        </p>
+        <div class="testimonial-author">
+          <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&q=80" alt="Aya Traoré" class="author-avatar">
+          <div>
+            <div class="author-name">Aya Traoré</div>
+            <div class="author-role">Locataire à Marcory</div>
+            <div class="verified-chip">✓ Profil vérifié</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA BANNER ═══ -->
+<section class="cta-section" id="cta">
+  <div class="cta-inner fade-in">
+    <div class="section-eyebrow" style="color:rgba(255,255,255,0.7)">Rejoignez Mona aujourd'hui</div>
+    <h2>Prêt à révolutionner votre manière de louer ?</h2>
+    <p class="cta-sub">Que vous soyez locataire ou propriétaire à Abidjan, Mona simplifie tout.</p>
+    <div class="cta-buttons">
+      <a
+        href="https://wa.me/2250797279722?text=Bonjour%20!%20Je%20suis%20int%C3%A9ress%C3%A9(e)%20par%20un%20logement%20sur%20Mona.%20Je%20souhaite%20r%C3%A9server%20une%20visite."
+        target="_blank"
+        class="btn-cta-tenant"
+      >
+        <svg style="width:20px;height:20px;flex-shrink:0" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Je suis locataire
+      </a>
+      <a
+        href="https://wa.me/2250797279722?text=Bonjour%20!%20Je%20suis%20propri%C3%A9taire%20et%20je%20souhaite%20publier%20mon%20annonce%20sur%20Mona."
+        target="_blank"
+        class="btn-cta-owner"
+      >
+        <svg style="width:20px;height:20px;flex-shrink:0" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Je suis propriétaire
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon" style="width:36px;height:36px">
+            <svg viewBox="0 0 40 40" fill="none" style="width:20px;height:20px"><path d="M20 6L8 16V32H16V23H24V32H32V16L20 6Z" fill="white" fill-opacity="0.9"/><path d="M20 23C20 23 17 26.5 17 28.5C17 30.2 18.3 31.5 20 31.5C21.7 31.5 23 30.2 23 28.5C23 26.5 20 23 20 23Z" fill="rgba(245,135,58,0.9)"/></svg>
+          </div>
+          <span class="logo-name">Mona</span>
+        </div>
+        <div class="footer-tagline">Ta maison, en un clic.</div>
+        <p class="footer-desc">La plateforme de location immobilière directe propriétaire en Côte d'Ivoire. Zéro intermédiaire, 100% sécurisé.</p>
+        <div class="social-row">
+          <a href="#" class="social-btn" aria-label="Facebook">f</a>
+          <a href="#" class="social-btn" aria-label="Twitter">𝕏</a>
+          <a href="#" class="social-btn" aria-label="Instagram">📷</a>
+          <a href="https://wa.me/2250797279722" target="_blank" class="social-btn" aria-label="WhatsApp" style="background:#25D366;border-color:#25D366;color:white">
+            <svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Plateforme</h4>
+        <ul>
+          <li><a href="#listings">Nos logements</a></li>
+          <li><a href="#how">Comment ça marche</a></li>
+          <li><a href="#cta">Publier une annonce</a></li>
+          <li><a href="#">Offres meublées</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Mona</h4>
+        <ul>
+          <li><a href="#">À propos</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Presse</a></li>
+          <li><a href="https://wa.me/2250797279722" target="_blank">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#">Mentions légales</a></li>
+          <li><a href="#">CGU / CGV</a></li>
+          <li><a href="#">Politique de confidentialité</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Mona. Tous droits réservés. · Abidjan, Côte d'Ivoire 🇨🇮</p>
+      <div class="footer-legal">
+        <a href="#">Mentions légales</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">FAQ</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ FLOATING WHATSAPP ═══ -->
+<div class="float-whatsapp">
+  <div class="float-tooltip">Discuter avec Mona 💬</div>
+  <a
+    href="https://wa.me/2250797279722?text=Bonjour%20Mona%20!%20Je%20suis%20int%C3%A9ress%C3%A9(e)%20par%20un%20logement."
+    target="_blank"
+    class="float-btn"
+    aria-label="Contacter Mona sur WhatsApp"
+  >
+    <div class="float-badge">1</div>
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </svg>
+  </a>
+</div>
+
+<!-- ═══ WIZARD OF OZ PANEL ═══ -->
+<button class="woz-toggle" onclick="toggleWoz()" title="Mode Fondateur — Test Magicien d'Oz" aria-label="Ouvrir le panneau fondateur">⚙</button>
+<div class="woz-panel" id="wozPanel">
+  <h4>🧙 Mode Magicien d'Oz</h4>
+  <p>Ce test valide la demande <strong>avant</strong> de construire l'application réelle. Vous jouez le rôle de l'algorithme.</p>
+  <div class="woz-step"><div class="woz-num">1</div><div>Un visiteur clique "Réserver une visite" → WhatsApp s'ouvre avec un message pré-rempli.</div></div>
+  <div class="woz-step"><div class="woz-num">2</div><div>Vous recevez le message et répondez manuellement en jouant le rôle de "Mona".</div></div>
+  <div class="woz-step"><div class="woz-num">3</div><div>Vous vérifiez son identité manuellement et organisez la visite.</div></div>
+  <div class="woz-step"><div class="woz-num">4</div><div>Vous mesurez : nb clics, nb messages reçus, taux de conversion → GO/NO GO.</div></div>
+  <p style="margin-top:8px;font-size:11px;color:rgba(255,255,255,0.35)">Remplacez +2250797279722 par votre vrai numéro WhatsApp Business.</p>
+</div>
+
+<script>
+/* ─── Navbar scroll effect ─── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+/* ─── Mobile menu ─── */
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+
+/* ─── Search handler ─── */
+function handleSearch() {
+  const val = document.querySelector('.search-bar input').value.trim();
+  const msg = val
+    ? `Bonjour Mona ! Je cherche un logement à ${val}. Pouvez-vous m'aider ?`
+    : `Bonjour Mona ! Je cherche un logement à Abidjan. Pouvez-vous m'aider ?`;
+  window.open(`https://wa.me/2250797279722?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+document.querySelector('.search-bar input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleSearch();
+});
+
+/* ─── Intersection Observer for fade-ins ─── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+/* ─── Wizard of Oz panel ─── */
+function toggleWoz() {
+  document.getElementById('wozPanel').classList.toggle('open');
+}
+
+/* ─── Smooth scroll for anchor links ─── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>
